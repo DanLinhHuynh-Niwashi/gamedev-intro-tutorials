@@ -5,8 +5,25 @@ void CAnimation::Add(int spriteId, DWORD time)
 	int t = time;
 	if (time == 0) t = this->defaultTime;
 
-	LPSPRITE sprite = CSprites::GetInstance()->Get(spriteId);
-	LPANIMATION_FRAME frame = new CAnimationFrame(sprite, t);
+	unordered_map<LPSPRITE, pair<float, float>> spriteList;
+	pair<float, float> offset = make_pair(0.0f, 0.0f);
+	spriteList.insert({ CSprites::GetInstance()->Get(spriteId), offset});
+
+	LPANIMATION_FRAME frame = new CAnimationFrame(spriteList, t);
+	frames.push_back(frame);
+}
+
+void CAnimation::Add(vector<int> spriteIds, vector<pair<float, float>> offsets, DWORD time)
+{
+	int t = time;
+	if (time == 0) t = this->defaultTime;
+
+	unordered_map<LPSPRITE, pair<float, float>> spriteList;
+	for (int i = 0; i < spriteIds.size(); i++) {
+		spriteList.insert({ CSprites::GetInstance()->Get(spriteIds[i]), offsets[i]});
+	}
+
+	LPANIMATION_FRAME frame = new CAnimationFrame(spriteList, t);
 	frames.push_back(frame);
 }
 
@@ -31,6 +48,6 @@ void CAnimation::Render(float x, float y)
 
 	}
 
-	frames[currentFrame]->GetSprite()->Draw(x, y);
+	frames[currentFrame]->Render(x, y);
 }
 
