@@ -6,6 +6,9 @@
 #include "Animations.h"
 
 #define MARIO_WIDTH 14
+#define MARIO_LEFT_WALK_ID 510
+#define MARIO_RIGHT_WALK_ID 500
+#define MARIO_IDLE_ID 520
 
 class CBrick : public CGameObject {
 public: 
@@ -20,6 +23,9 @@ protected:
 	float vx;
 public:
 	CMario(float x, float y, float vx);
+	void SetVx(float vx) {
+		this->vx = vx;
+	}
 	void Update(DWORD dt);
 	void Render();
 };
